@@ -33,21 +33,25 @@ export class FileUploadManagerService {
   async processXmlToPdf(
     item: PdfFileItem,
     config: XmlUploadConfig
-  ): Promise<{ success: boolean; pdfBlob?: Blob; error?: string }> {
+  ): Promise<{ success: boolean; pdfBlob?: Blob; pdfFilename?: string; error?: string }> {
     const validationError = this.validateXmlFile(item.xmlFile, config);
     if (validationError) {
       return { success: false, error: validationError };
     }
 
     try {
-      const pdfBlob = await firstValueFrom(
+      const result = await firstValueFrom(
         this.boletaFileService.generatePdf(
           item.xmlFile,
           config.horizontalDuplicado ?? false
         )
       );
 
-      return { success: true, pdfBlob };
+      return {
+        success: true,
+        pdfBlob: result.blob,
+        pdfFilename: result.filename
+      };
     } catch (err: any) {
       return {
         success: false,
