@@ -38,13 +38,50 @@
 
     <!-- File Manager -->
     <div class="rounded-xl bg-white shadow-sm border border-gray-200 p-6">
+      <div class="flex flex-col gap-2 mb-4">
+        <div class="flex items-center gap-2 text-sm font-medium text-gray-800">
+          <i class="pi pi-sliders-h text-sky-600"></i>
+          <span>Orientación del PDF</span>
+        </div>
+        <div class="grid grid-cols-2 gap-2 sm:inline-flex sm:flex-wrap">
+          <button
+            type="button"
+            class="px-4 py-2 rounded-lg border text-sm font-medium transition-colors duration-150"
+            [class.bg-sky-50]="orientation === 'vertical'"
+            [class.border-sky-300]="orientation === 'vertical'"
+            [class.text-sky-700]="orientation === 'vertical'"
+            [class.bg-white]="orientation !== 'vertical'"
+            [class.border-gray-300]="orientation !== 'vertical'"
+            [class.text-gray-700]="orientation !== 'vertical'"
+            (click)="setOrientation('vertical')"
+          >
+            Vertical
+          </button>
+          <button
+            type="button"
+            class="px-4 py-2 rounded-lg border text-sm font-medium transition-colors duration-150"
+            [class.bg-sky-50]="orientation === 'horizontal'"
+            [class.border-sky-300]="orientation === 'horizontal'"
+            [class.text-sky-700]="orientation === 'horizontal'"
+            [class.bg-white]="orientation !== 'horizontal'"
+            [class.border-gray-300]="orientation !== 'horizontal'"
+            [class.text-gray-700]="orientation !== 'horizontal'"
+            (click)="setOrientation('horizontal')"
+          >
+            Horizontal
+          </button>
+        </div>
+        <p class="text-xs text-gray-600">
+          Elige como quieres generar los PDFs antes de subir tus archivos.
+        </p>
+      </div>
       <app-file-entity-manager
         label="Archivos XML"
         description="Arrastra tus archivos XML aquí o haz clic para seleccionarlos"
         [maxSizeMB]="10"
         [maxFiles]="20"
         [multiple]="true"
-        [horizontalDuplicado]="false"
+        [horizontalDuplicado]="orientation === 'horizontal'"
         (rejections)="onRejections($event)"
         (processingComplete)="onProcessingComplete()"
       />
