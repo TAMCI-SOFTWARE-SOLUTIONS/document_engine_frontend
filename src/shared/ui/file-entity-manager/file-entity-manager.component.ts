@@ -197,6 +197,54 @@ export class FileEntityManagerComponent implements OnDestroy {
     a.click();
   }
 
+  async onDownloadAll(): Promise<void> {
+    const successItems = this.completed();
+    if (successItems.length === 0) return;
+
+    // Crear un mapa para detectar nombres duplicados
+    const nameCount = new Map<string, number>();
+    const itemsWithUniqueNames: Array<{ item: PdfFileItem; uniqueName: string }> = [];
+
+    // Primera pasada: contar duplicados y generar nombres únicos
+    for (const item of successItems) {
+      if (!item.pdfUrl) continue;
+
+      const baseName = item.pdfFilename || item.originalXmlName.replace(/\.xml$/i, '.pdf');
+      const count = nameCount.get(baseName) || 0;
+      nameCount.set(baseName, count + 1);
+
+      let uniqueName = baseName;
+      if (count > 0) {
+        // Si es duplicado, agregar "-REPETIDO" antes de la extensión
+        const extensionIndex = baseName.lastIndexOf('.pdf');
+        if (extensionIndex !== -1) {
+          const nameWithoutExt = baseName.substring(0, extensionIndex);
+          uniqueName = `${nameWithoutExt}-REPETIDO.pdf`;
+        } else {
+          uniqueName = `${baseName}-REPETIDO`;
+        }
+      }
+
+      itemsWithUniqueNames.push({ item, uniqueName });
+    }
+
+    // Segunda pasada: descargar cada archivo con un pequeño delay
+    for (let i = 0; i < itemsWithUniqueNames.length; i++) {
+      const { item, uniqueName } = itemsWithUniqueNames[i];
+
+      const a = document.createElement('a');
+      a.href = item.pdfUrl!;
+      a.download = uniqueName;
+      a.target = '_blank';
+      a.click();
+
+      // Delay de 300ms entre descargas para evitar bloqueo del navegador
+      if (i < itemsWithUniqueNames.length - 1) {
+        await new Promise((resolve) => setTimeout(resolve, 300));
+      }
+    }
+  }
+
   onRequestDelete(item: PdfFileItem): void {
     this.itemToDelete.set(item);
     this.showDeleteConfirmModal.set(true);
