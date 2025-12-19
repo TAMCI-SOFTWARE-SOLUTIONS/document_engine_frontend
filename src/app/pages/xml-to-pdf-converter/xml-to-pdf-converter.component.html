@@ -1,0 +1,74 @@
+<div class="min-h-screen bg-linear-to-br from-sky-50 via-white to-blue-50">
+  <!-- Header -->
+  <header class="bg-white border-b border-gray-200 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <div class="flex items-center gap-3">
+        <div>
+          <h1 class="text-2xl font-bold text-gray-900">Conversor XML a PDF</h1>
+          <p class="text-sm text-gray-600">Convierte tus archivos XML a PDFs de forma rápida y sencilla</p>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <!-- Info Card -->
+    <div class="mb-8 rounded-xl bg-white shadow-sm border border-gray-200 p-6">
+      <div class="flex items-start gap-4">
+        <div class="flex-1">
+          <h2 class="text-lg font-semibold text-gray-900 mb-2">¿Cómo funciona?</h2>
+          <ul class="space-y-2 text-sm text-gray-600">
+            <li class="flex items-start gap-2">
+              <i class="pi pi-check-circle text-emerald-600 mt-0.5"></i>
+              <span><strong>1. Selecciona tus archivos XML:</strong> Puedes subir múltiples archivos a la vez</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <i class="pi pi-check-circle text-emerald-600 mt-0.5"></i>
+              <span><strong>2. Procesamiento automático:</strong> Los archivos se procesan en cola uno por uno</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <i class="pi pi-check-circle text-emerald-600 mt-0.5"></i>
+              <span><strong>3. Descarga tus PDFs:</strong> Una vez generados, podrás abrirlos o descargarlos</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- File Manager -->
+    <div class="rounded-xl bg-white shadow-sm border border-gray-200 p-6">
+      <app-file-entity-manager
+        label="Archivos XML"
+        description="Arrastra tus archivos XML aquí o haz clic para seleccionarlos"
+        [maxSizeMB]="10"
+        [maxFiles]="20"
+        [multiple]="true"
+        [horizontalDuplicado]="false"
+        (rejections)="onRejections($event)"
+        (processingComplete)="onProcessingComplete()"
+      />
+    </div>
+
+    <!-- Warning Card -->
+    <div class="mt-6 rounded-xl bg-amber-50 border border-amber-200 p-4">
+      <div class="flex items-start gap-3">
+        <i class="pi pi-exclamation-triangle text-amber-600 text-lg mt-0.5"></i>
+        <div class="flex-1">
+          <h3 class="text-sm font-semibold text-amber-900 mb-1">Importante</h3>
+          <p class="text-sm text-amber-800">
+            Si cierras o recargas esta página mientras hay archivos procesándose,
+            perderás todo el progreso y los PDFs generados.
+          </p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 mt-12">
+    <div class="text-center text-sm text-gray-500">
+      <p>&copy; 2025 Conversor XML a PDF. Todos los derechos reservados.</p>
+    </div>
+  </footer>
+</div>
