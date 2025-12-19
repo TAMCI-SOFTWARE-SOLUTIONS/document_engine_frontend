@@ -80,6 +80,7 @@ export class FileEntityManagerComponent implements OnDestroy {
         xmlFile,
         pdfBlob: null,
         pdfUrl: null,
+        pdfFilename: null,
         status: 'pending',
         horizontalDuplicado: config.horizontalDuplicado,
       };
@@ -106,6 +107,7 @@ export class FileEntityManagerComponent implements OnDestroy {
           status: 'success',
           pdfBlob: result.pdfBlob,
           pdfUrl,
+          pdfFilename: result.pdfFilename || 'documento.pdf',
         });
       } else {
         this.store.updateItem(item.id, {
@@ -187,7 +189,7 @@ export class FileEntityManagerComponent implements OnDestroy {
 
   onDownloadPdf(item: PdfFileItem): void {
     if (!item.pdfUrl) return;
-    const pdfName = item.originalXmlName.replace(/\.xml$/i, '.pdf');
+    const pdfName = item.pdfFilename || item.originalXmlName.replace(/\.xml$/i, '.pdf');
     const a = document.createElement('a');
     a.href = item.pdfUrl;
     a.download = pdfName;

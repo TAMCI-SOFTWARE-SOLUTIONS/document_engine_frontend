@@ -103,7 +103,8 @@
                 </p>
               } @else if (item.status === 'success') {
                 <p class="text-xs text-emerald-600 flex items-center gap-1">
-                  <i class="pi pi-check-circle text-sm"></i> PDF generado correctamente
+                  <i class="pi pi-check-circle text-sm"></i>
+                  <span class="font-medium">{{ item.pdfFilename }}</span>
                 </p>
               } @else if (item.status === 'error') {
                 <p class="text-xs text-red-600">Error: {{ item.error }}</p>
