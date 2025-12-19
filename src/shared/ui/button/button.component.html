@@ -1,0 +1,46 @@
+<button
+  [type]="type()"
+  [disabled]="isDisabled()"
+  [class]="buttonClasses()"
+  [attr.aria-label]="ariaLabel() || label()"
+  [attr.aria-busy]="isLoading()"
+  [attr.aria-disabled]="isDisabled()"
+  (click)="onClick($event)"
+>
+  <!-- CUSTOM TEMPLATE -->
+  @if (customTemplate()) {
+    <ng-container
+      [ngTemplateOutlet]="customTemplate()!"
+      [ngTemplateOutletContext]="context()"
+    ></ng-container>
+  } @else {
+    <!-- LOADING ICON -->
+    @if (isLoading()) {
+      <i [class]="iconClasses() + ' ' + loadingIcon() + ' pi-spin'"></i>
+    }
+
+    <!-- LEFT ICON -->
+    @if (!isLoading() && icon() && !iconRight()) {
+      <i [class]="iconClasses() + ' pi-' + icon()"></i>
+    }
+
+    <!-- LABEL -->
+    @if (currentLabel()) {
+      <span>{{ currentLabel() }}</span>
+    }
+
+    <!-- RIGHT ICON -->
+    @if (!isLoading() && iconRight()) {
+      <i [class]="iconClasses() + ' pi-' + iconRight()"></i>
+    }
+
+    <!-- STATE ICONS -->
+    @if (state() === 'success' && !isLoading()) {
+      <i [class]="iconClasses() + ' pi-check'"></i>
+    }
+
+    @if (state() === 'error' && !isLoading()) {
+      <i [class]="iconClasses() + ' pi-times'"></i>
+    }
+  }
+</button>
