@@ -6,6 +6,7 @@ export interface PdfFileItem {
   xmlFile: File;
   pdfBlob: Blob | null;
   pdfUrl: string | null;
+  pdfFilename: string | null;
   status: PdfFileStatus;
   error?: string;
   horizontalDuplicado?: boolean;

@@ -65,11 +65,11 @@ export class BoletaFileCacheService implements OnDestroy {
   ): Promise<string | null> {
 
     try {
-      const blob = await firstValueFrom(
+      const result = await firstValueFrom(
         this.boletaFileService.generatePdf(file, horizontalDuplicado)
       );
 
-      const blobUrl = URL.createObjectURL(blob);
+      const blobUrl = URL.createObjectURL(result.blob);
       this.cache.set(cacheKey, blobUrl);
 
       return blobUrl;
