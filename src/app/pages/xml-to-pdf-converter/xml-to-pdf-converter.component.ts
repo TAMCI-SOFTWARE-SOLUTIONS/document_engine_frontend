@@ -10,7 +10,7 @@ import { FileUploadRejection } from '../../../shared/ui/file-entity-manager/file
   styleUrl: './xml-to-pdf-converter.component.css',
 })
 export class XmlToPdfConverterComponent {
-  orientation: 'vertical' | 'horizontal' = 'vertical';
+  orientation: 'vertical' | 'horizontal' = 'horizontal';
 
   onRejections(rejections: FileUploadRejection[]): void {
     console.warn('Archivos rechazados:', rejections);
