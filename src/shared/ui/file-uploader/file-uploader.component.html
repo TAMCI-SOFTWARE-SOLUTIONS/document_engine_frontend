@@ -1,0 +1,46 @@
+<div class="flex flex-col gap-2">
+  @if (label()) {
+    <label class="text-sm font-medium text-gray-800">
+      {{ label() }}
+    </label>
+  }
+
+  <div
+    class="border rounded-xl bg-white cursor-pointer transition-all flex items-center justify-center hover:border-sky-400 hover:bg-sky-50/50 relative overflow-hidden"
+    [class.border-sky-400]="isDragging()"
+    [class.opacity-50]="disabled()"
+    (dragover)="onDragOver($event)"
+    (dragleave)="onDragLeave($event)"
+    (drop)="onDrop($event)"
+    [class]="zoneClasses()"
+    (click)="onClick(fileInput)"
+  >
+    <i class="pi pi-upload text-sky-600" [class]="iconClasses()"></i>
+
+    <div class="flex flex-col" [ngClass]="{ 'items-center text-center': variant() === 'lg' }">
+      <p class="font-semibold text-gray-700">
+        @if (!disabled()) {
+          Haz clic para seleccionar
+        } @else {
+          Subida deshabilitada
+        }
+      </p>
+      <p class="text-xs text-gray-500">o arrastra archivos aquí</p>
+    </div>
+
+    <input
+      #fileInput
+      type="file"
+      class="hidden"
+      [attr.multiple]="multiple() ? '' : null"
+      [attr.accept]="accept() || null"
+      (change)="onFileInput($event)"
+    />
+  </div>
+
+  @if (description()) {
+    <p class="text-xs text-gray-500 mt-1">
+      {{ description() }}
+    </p>
+  }
+</div>

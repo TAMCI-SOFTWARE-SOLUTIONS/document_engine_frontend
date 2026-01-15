@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: jhosepmyr/document-engine-frontend:latest
+    container_name: equipment-frontend
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
