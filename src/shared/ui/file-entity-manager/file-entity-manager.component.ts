@@ -6,6 +6,7 @@ import {ButtonComponent} from '../button/button.component';
 import {generateUUID} from '../../model/utils/uuid.util';
 import {PdfFileStore} from '../../model/stores/pdf-file.store';
 import {PdfFileItem} from '../../model/entities/pdf-file-item.interface';
+import JSZip from 'jszip';
 
 export interface FileUploadRejection {
   file: File;
@@ -201,13 +202,12 @@ export class FileEntityManagerComponent implements OnDestroy {
     const successItems = this.completed();
     if (successItems.length === 0) return;
 
-    // Crear un mapa para detectar nombres duplicados
-    const nameCount = new Map<string, number>();
-    const itemsWithUniqueNames: Array<{ item: PdfFileItem; uniqueName: string }> = [];
+    const zip = new JSZip();
 
-    // Primera pasada: contar duplicados y generar nombres únicos
+    const nameCount = new Map<string, number>();
+
     for (const item of successItems) {
-      if (!item.pdfUrl) continue;
+      if (!item.pdfBlob) continue;
 
       const baseName = item.pdfFilename || item.originalXmlName.replace(/\.xml$/i, '.pdf');
       const count = nameCount.get(baseName) || 0;
@@ -225,24 +225,22 @@ export class FileEntityManagerComponent implements OnDestroy {
         }
       }
 
-      itemsWithUniqueNames.push({ item, uniqueName });
+      // Agregar el PDF al ZIP
+      zip.file(uniqueName, item.pdfBlob);
     }
 
-    // Segunda pasada: descargar cada archivo con un pequeño delay
-    for (let i = 0; i < itemsWithUniqueNames.length; i++) {
-      const { item, uniqueName } = itemsWithUniqueNames[i];
+    // Generar el archivo ZIP
+    const zipBlob = await zip.generateAsync({ type: 'blob' });
 
-      const a = document.createElement('a');
-      a.href = item.pdfUrl!;
-      a.download = uniqueName;
-      a.target = '_blank';
-      a.click();
+    // Descargar el archivo ZIP
+    const a = document.createElement('a');
+    const url = URL.createObjectURL(zipBlob);
+    a.href = url;
+    a.download = `documentos-${new Date().getTime()}.zip`;
+    a.click();
 
-      // Delay de 300ms entre descargas para evitar bloqueo del navegador
-      if (i < itemsWithUniqueNames.length - 1) {
-        await new Promise((resolve) => setTimeout(resolve, 300));
-      }
-    }
+    // Liberar el objeto URL
+    URL.revokeObjectURL(url);
   }
 
   onRequestDelete(item: PdfFileItem): void {
