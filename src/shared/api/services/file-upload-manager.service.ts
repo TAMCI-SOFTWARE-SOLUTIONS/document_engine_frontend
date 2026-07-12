@@ -7,6 +7,7 @@ export interface XmlUploadConfig {
   maxSizeMB?: number;
   maxFiles?: number;
   horizontalDuplicado?: boolean;
+  formatoControlHH?: boolean;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -43,7 +44,8 @@ export class FileUploadManagerService {
       const result = await firstValueFrom(
         this.boletaFileService.generatePdf(
           item.xmlFile,
-          config.horizontalDuplicado ?? false
+          config.horizontalDuplicado ?? false,
+          config.formatoControlHH ?? false
         )
       );
 

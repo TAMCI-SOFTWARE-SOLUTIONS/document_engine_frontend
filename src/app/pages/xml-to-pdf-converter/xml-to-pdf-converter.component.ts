@@ -11,6 +11,7 @@ import { FileUploadRejection } from '../../../shared/ui/file-entity-manager/file
 })
 export class XmlToPdfConverterComponent {
   orientation: 'vertical' | 'horizontal' = 'horizontal';
+  formatoControlHH = false;
 
   onRejections(rejections: FileUploadRejection[]): void {
     console.warn('Archivos rechazados:', rejections);
@@ -22,5 +23,9 @@ export class XmlToPdfConverterComponent {
 
   setOrientation(orientation: 'vertical' | 'horizontal'): void {
     this.orientation = orientation;
+  }
+
+  setFormatoControlHH(formatoControlHH: boolean): void {
+    this.formatoControlHH = formatoControlHH;
   }
 }
