@@ -30,6 +30,7 @@ export class FileEntityManagerComponent implements OnDestroy {
   maxFiles = input<number>(20);
   multiple = input<boolean>(true);
   horizontalDuplicado = input<boolean>(false);
+  formatoControlHH = input<boolean>(false);
 
   rejections = output<FileUploadRejection[]>();
   processingComplete = output<void>();
@@ -71,6 +72,7 @@ export class FileEntityManagerComponent implements OnDestroy {
       maxSizeMB: this.maxSizeMB(),
       maxFiles: this.maxFiles(),
       horizontalDuplicado: this.horizontalDuplicado(),
+      formatoControlHH: this.formatoControlHH(),
     };
 
     for (const xmlFile of valid) {
