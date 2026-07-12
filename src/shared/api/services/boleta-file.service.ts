@@ -47,12 +47,14 @@ export class BoletaFileService extends BaseService {
 
   generatePdf(
     file: File,
-    horizontalDuplicado: boolean = false
+    horizontalDuplicado: boolean = false,
+    formatoControlHH: boolean = false
   ): Observable<PdfGenerationResult> {
 
     const formData = new FormData();
     formData.append('file', file);
     formData.append('horizontalDuplicado', String(horizontalDuplicado));
+    formData.append('formatoControlHH', String(formatoControlHH));
 
     return this.http.post(
       `${this.resourcePath()}/pdf`,
