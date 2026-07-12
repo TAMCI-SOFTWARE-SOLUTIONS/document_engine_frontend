@@ -75,6 +75,44 @@
           Elige como quieres generar los PDFs antes de subir tus archivos.
         </p>
       </div>
+      <div class="flex flex-col gap-2 mb-4">
+        <div class="flex items-center gap-2 text-sm font-medium text-gray-800">
+          <i class="pi pi-file-edit text-sky-600"></i>
+          <span>Nombre del archivo</span>
+        </div>
+        <div class="grid grid-cols-2 gap-2 sm:inline-flex sm:flex-wrap">
+          <button
+            type="button"
+            class="px-4 py-2 rounded-lg border text-sm font-medium transition-colors duration-150"
+            [class.bg-sky-50]="!formatoControlHH"
+            [class.border-sky-300]="!formatoControlHH"
+            [class.text-sky-700]="!formatoControlHH"
+            [class.bg-white]="formatoControlHH"
+            [class.border-gray-300]="formatoControlHH"
+            [class.text-gray-700]="formatoControlHH"
+            (click)="setFormatoControlHH(false)"
+          >
+            Formato actual
+          </button>
+          <button
+            type="button"
+            class="px-4 py-2 rounded-lg border text-sm font-medium transition-colors duration-150"
+            [class.bg-sky-50]="formatoControlHH"
+            [class.border-sky-300]="formatoControlHH"
+            [class.text-sky-700]="formatoControlHH"
+            [class.bg-white]="!formatoControlHH"
+            [class.border-gray-300]="!formatoControlHH"
+            [class.text-gray-700]="!formatoControlHH"
+            (click)="setFormatoControlHH(true)"
+          >
+            Nombre para Control HH
+          </button>
+        </div>
+        <p class="text-xs text-gray-600">
+          "Nombre para Control HH" nombra el PDF como <code>DNI_Nombres.pdf</code> (empieza con el DNI), listo para
+          subirlo directo sin renombrar a mano.
+        </p>
+      </div>
       <app-file-entity-manager
         label="Archivos XML"
         description="Arrastra tus archivos XML aquí o haz clic para seleccionarlos"
@@ -82,6 +120,7 @@
         [maxFiles]="200"
         [multiple]="true"
         [horizontalDuplicado]="orientation === 'horizontal'"
+        [formatoControlHH]="formatoControlHH"
         (rejections)="onRejections($event)"
         (processingComplete)="onProcessingComplete()"
       />
