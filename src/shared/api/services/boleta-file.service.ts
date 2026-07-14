@@ -45,16 +45,10 @@ export class BoletaFileService extends BaseService {
     return null;
   }
 
-  generatePdf(
-    file: File,
-    horizontalDuplicado: boolean = false,
-    formatoControlHH: boolean = false
-  ): Observable<PdfGenerationResult> {
+  generatePdf(file: File): Observable<PdfGenerationResult> {
 
     const formData = new FormData();
     formData.append('file', file);
-    formData.append('horizontalDuplicado', String(horizontalDuplicado));
-    formData.append('formatoControlHH', String(formatoControlHH));
 
     return this.http.post(
       `${this.resourcePath()}/pdf`,
@@ -81,12 +75,9 @@ export class BoletaFileService extends BaseService {
   }
 
 
-  generatePdfAndOpen(
-    file: File,
-    horizontalDuplicado: boolean = false
-  ): Observable<void> {
+  generatePdfAndOpen(file: File): Observable<void> {
 
-    return this.generatePdf(file, horizontalDuplicado).pipe(
+    return this.generatePdf(file).pipe(
       map((result: PdfGenerationResult) => {
         const url = window.URL.createObjectURL(result.blob);
         window.open(url, '_blank');
@@ -94,12 +85,9 @@ export class BoletaFileService extends BaseService {
     );
   }
 
-  generatePdfAndDownload(
-    file: File,
-    horizontalDuplicado: boolean = false
-  ): Observable<void> {
+  generatePdfAndDownload(file: File): Observable<void> {
 
-    return this.generatePdf(file, horizontalDuplicado).pipe(
+    return this.generatePdf(file).pipe(
       map((result: PdfGenerationResult) => {
         const url = window.URL.createObjectURL(result.blob);
         const link = document.createElement('a');

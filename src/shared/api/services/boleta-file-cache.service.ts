@@ -24,8 +24,7 @@ export class BoletaFileCacheService implements OnDestroy {
    */
   async getPdfUrl(
     cacheKey: string,
-    file: File,
-    horizontalDuplicado: boolean = false
+    file: File
   ): Promise<string | null> {
 
     if (!cacheKey) {
@@ -43,11 +42,7 @@ export class BoletaFileCacheService implements OnDestroy {
     }
 
     // 3. Nueva generación
-    const requestPromise = this.fetchAndCachePdf(
-      cacheKey,
-      file,
-      horizontalDuplicado
-    );
+    const requestPromise = this.fetchAndCachePdf(cacheKey, file);
 
     this.pendingRequests.set(cacheKey, requestPromise);
 
@@ -60,13 +55,12 @@ export class BoletaFileCacheService implements OnDestroy {
 
   private async fetchAndCachePdf(
     cacheKey: string,
-    file: File,
-    horizontalDuplicado: boolean
+    file: File
   ): Promise<string | null> {
 
     try {
       const result = await firstValueFrom(
-        this.boletaFileService.generatePdf(file, horizontalDuplicado)
+        this.boletaFileService.generatePdf(file)
       );
 
       const blobUrl = URL.createObjectURL(result.blob);
@@ -87,7 +81,6 @@ export class BoletaFileCacheService implements OnDestroy {
     items: {
       cacheKey: string;
       file: File;
-      horizontalDuplicado?: boolean;
     }[]
   ): Promise<void> {
 
@@ -96,11 +89,7 @@ export class BoletaFileCacheService implements OnDestroy {
     }
 
     const promises = items.map(item =>
-      this.getPdfUrl(
-        item.cacheKey,
-        item.file,
-        item.horizontalDuplicado ?? false
-      )
+      this.getPdfUrl(item.cacheKey, item.file)
     );
 
     try {

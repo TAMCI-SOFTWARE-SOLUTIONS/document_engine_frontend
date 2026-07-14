@@ -6,8 +6,6 @@ import {PdfFileItem} from '../../model/entities/pdf-file-item.interface';
 export interface XmlUploadConfig {
   maxSizeMB?: number;
   maxFiles?: number;
-  horizontalDuplicado?: boolean;
-  formatoControlHH?: boolean;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -42,11 +40,7 @@ export class FileUploadManagerService {
 
     try {
       const result = await firstValueFrom(
-        this.boletaFileService.generatePdf(
-          item.xmlFile,
-          config.horizontalDuplicado ?? false,
-          config.formatoControlHH ?? false
-        )
+        this.boletaFileService.generatePdf(item.xmlFile)
       );
 
       return {

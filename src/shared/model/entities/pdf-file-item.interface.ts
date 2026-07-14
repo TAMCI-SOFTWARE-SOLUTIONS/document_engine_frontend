@@ -9,5 +9,4 @@ export interface PdfFileItem {
   pdfFilename: string | null;
   status: PdfFileStatus;
   error?: string;
-  horizontalDuplicado?: boolean;
 }
